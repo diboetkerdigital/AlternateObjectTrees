@@ -52,7 +52,7 @@ class Input implements LevelDefinitionInterface
         // create condition
         $where = $this->condition == '' ? 1 : $this->condition;
         if ($condition) {
-            $where = 'LIKE \'%'.$where.'%\'';
+            $where = "LIKE '%$where%'";
             $where .= ' AND ' . $condition;
         }
         // TODO: this is such a bonkers way to pass down values.
