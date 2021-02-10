@@ -50,17 +50,19 @@ class Input implements LevelDefinitionInterface
         $db = Db::get();
 
         // create condition
-        $where = $this->condition == '' ? 1 : $this->condition;
+        $where = $this->condition == '' ? 1 : $db->getWrappedConnection()->quote("%".$this->condition."%");
         if ($condition) {
+            $where = ' LIKE ' . $where;
             $where .= ' AND ' . $condition;
         }
 
         // create query
         $sql = 'SELECT SQL_CALC_FOUND_ROWS %1$s as "value", %1$s as "label", count(*) as "count"
                 FROM object_%2$s
-                WHERE %3$s
+                WHERE object_%2$s.%1$s %3$s
                 GROUP BY %1$s
                 ORDER BY %1$s';
+
         if ($offset && $limit) {
             $sql .= sprintf(' LIMIT %d, %d', $offset, $limit);
         }
