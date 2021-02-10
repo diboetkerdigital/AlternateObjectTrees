@@ -50,13 +50,11 @@ class Input implements LevelDefinitionInterface
         $db = Db::get();
 
         // create condition
-        $where = $this->condition == '' ? 1 : $this->condition;
+        $where = $this->condition == '' ? 1 : $db->getWrappedConnection()->quote("%".$this->condition."%");
         if ($condition) {
-            $where = "LIKE '%$where%'";
+            $where = ' LIKE ' . $where;
             $where .= ' AND ' . $condition;
         }
-        // TODO: this is such a bonkers way to pass down values.
-        // When ViCA is built, we have to do this clean and simple.
 
         // create query
         $sql = 'SELECT SQL_CALC_FOUND_ROWS %1$s as "value", %1$s as "label", count(*) as "count"
