@@ -6,5 +6,3 @@ repos:
       - id: pre-commit-config
       - id: gitignore
       - id: codeowners
-      - id: yamllint
-      - id: kubernetes
